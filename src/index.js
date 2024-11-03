@@ -23,13 +23,22 @@ module.exports = {
     });
 
     // Sync the model with the database
-    SampleModel.sync()
-      .then(() => {
+    (async () => {
+      try {
+        await SampleModel.sync();
         console.log('SampleModel synced with the database');
-      })
-      .catch((err) => {
+      } catch (err) {
         console.error('Error syncing SampleModel:', err);
-      });
+      }
+    })();
+    
+    // SampleModel.sync()
+    //   .then(() => {
+    //     console.log('SampleModel synced with the database');
+    //   })
+    //   .catch((err) => {
+    //     console.error('Error syncing SampleModel:', err);
+    //   });
 
     // Route to create a new record
     app.post('/plugin-data', async (req, res) => {

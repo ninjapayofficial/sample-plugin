@@ -12,6 +12,8 @@
 // src/index.js
 module.exports = {
   init: function (app, sequelize) {
+    console.log('Plugin init function called');
+
     // Define a Sequelize model
     const { DataTypes } = require('sequelize');
 
@@ -21,7 +23,13 @@ module.exports = {
     });
 
     // Sync the model with the database
-    SampleModel.sync();
+    SampleModel.sync()
+      .then(() => {
+        console.log('SampleModel synced with the database');
+      })
+      .catch((err) => {
+        console.error('Error syncing SampleModel:', err);
+      });
 
     // Route to create a new record
     app.post('/plugin-data', async (req, res) => {
@@ -29,34 +37,10 @@ module.exports = {
         const data = await SampleModel.create(req.body);
         res.status(201).send(`Data saved successfully! ID: ${data.id}`);
       } catch (error) {
-        console.error('Plugin Error:', error);
+        console.error('Error in POST /plugin-data:', error);
         res.status(500).send('Error saving data.');
       }
     });
-
-    // //Use validation libraries to ensure incoming data is safe.
-    // const Joi = require('joi');
-
-    // const dataSchema = Joi.object({
-    //   name: Joi.string().required(),
-    //   value: Joi.number().integer().required(),
-    // });
-    
-    // app.post('/plugin-data', async (req, res) => {
-    //   const { error, value } = dataSchema.validate(req.body);
-    //   if (error) {
-    //     return res.status(400).send('Invalid data.');
-    //   }
-    
-    //   try {
-    //     const data = await SampleModel.create(value);
-    //     res.status(201).send(`Data saved successfully! ID: ${data.id}`);
-    //   } catch (error) {
-    //     console.error('Plugin Error:', error);
-    //     res.status(500).send('Error saving data.');
-    //   }
-    // });
-    
 
     // Route to retrieve all records
     app.get('/plugin-data', async (req, res) => {
@@ -64,7 +48,7 @@ module.exports = {
         const data = await SampleModel.findAll();
         res.json(data);
       } catch (error) {
-        console.error(error);
+        console.error('Error in GET /plugin-data:', error);
         res.status(500).send('Error retrieving data.');
       }
     });

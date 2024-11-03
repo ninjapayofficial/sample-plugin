@@ -4,9 +4,9 @@ const path = require('path');
 module.exports = {
   entry: './src/index.js',
   output: {
-    filename: 'index.js',
-    path: path.resolve(__dirname),
-    libraryTarget: 'commonjs2',
+    filename: 'index.js', // Output file name
+    path: path.resolve(__dirname), // Output directory: plugin root
+    libraryTarget: 'commonjs2', // For Node.js module compatibility
   },
   target: 'node', // Since we're running in Node.js
   module: {
@@ -15,12 +15,17 @@ module.exports = {
         test: /\.js$/,
         exclude: /node_modules/,
         use: {
-          loader: 'babel-loader',
+          loader: 'babel-loader', // If you're using Babel
+          options: {
+            presets: ['@babel/preset-env'],
+          },
         },
       },
     ],
   },
   externals: {
-    express: 'commonjs express', // Do not bundle express
+    // Exclude dependencies that are available in the main app
+    sequelize: 'commonjs sequelize',
+    express: 'commonjs express',
   },
 };

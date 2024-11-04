@@ -41,7 +41,7 @@ module.exports = {
     //   });
 
     // Route to create a new record
-    app.post('/plugin-data', async (req, res) => {
+    app.post('/sample-plugin/plugin-data', async (req, res) => {
       try {
         const data = await SampleModel.create(req.body);
         res.status(201).send(`Data saved successfully! ID: ${data.id}`);
@@ -52,7 +52,7 @@ module.exports = {
     });
 
     // Route to retrieve all records
-    app.get('/plugin-data', async (req, res) => {
+    app.get('/sample-plugin/plugin-data', async (req, res) => {
       try {
         const data = await SampleModel.findAll();
         res.json(data);

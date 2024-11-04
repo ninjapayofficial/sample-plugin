@@ -1,0 +1,9 @@
+{
+    "name": "Sample Plugin",
+    "version": "0.0.1",
+    "description": "A sample plugin for demonstration purposes",
+    "author": "Author Name",
+    "main": "index.js",
+    "checksum": "abc123..."
+  }
+  
